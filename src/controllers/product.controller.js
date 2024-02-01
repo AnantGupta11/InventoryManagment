@@ -1,0 +1,56 @@
+import { header } from 'express-validator';
+import ProductModel from '../models/product.model.js';
+
+class ProductsController {
+  getProducts(req, res, next) {
+    var products = ProductModel.getAll();
+    res.render('index', { products });
+  }
+
+  getAddProduct(req, res, next) {
+    res.render('new-product', {
+      errorMessage: null,
+    });
+  }
+
+  postAddProduct(req, res, next) {
+    const {name,desc,price}=req.body;
+    const imageUrl="images/"+req.file.filename;
+    ProductModel.add(name,desc,price,imageUrl);
+    var products = ProductModel.getAll();
+    res.render('index', { products });
+  }
+
+  getUpdateProductView(req,res,next){
+    // if product exists then return view
+    const id =req.params.id;
+    const productFound=ProductModel.getById(id);
+    if(productFound){
+      res.render('update-product',{product:productFound,errorMessage:null});
+    }
+    //else return errors
+    else{
+      res.status(401).send('Product not found');
+    }
+  }
+
+  postUpdateProduct(req,res,next){
+    ProductModel.update(req.body);
+    var products = ProductModel.getAll();
+    res.render('index', { products });
+  }
+
+  deleteProduct(req,res,next){
+    const id=req.params.id;
+    const productFound=ProductModel.getById(id);
+    if(!productFound){
+      return res.status(401).send('Product not found');
+    }
+    // header("contentType:application/json");
+    ProductModel.delete(id);
+    var products = ProductModel.getAll();
+    res.render('index',{products});
+  }
+}
+
+export default ProductsController;
