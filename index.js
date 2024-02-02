@@ -20,6 +20,7 @@ app.get('/', productsController.getProducts);
 app.get('/add-product', productsController.getAddProduct);
 app.get('/update-product/:id', productsController.getUpdateProductView);
 app.get('/register',userController.getRegister);
+app.get('/login',userController.getLogin);
 app.post('/delete-product/:id', productsController.deleteProduct);
 app.post('/', uploadFile.single('imageUrl'),validationMiddleware, productsController.postAddProduct);
 app.post('/update-product', productsController.postUpdateProduct);
