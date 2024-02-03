@@ -1,5 +1,11 @@
 <h1 class="mt-5 mb-4 header">Login</h1>
 
+<%if(errorMessage){ %>
+    <div class="alert alert-danger" role="alert">
+        <%= errorMessage %>
+    </div>
+<%}%>
+
 <form action="/login" method="post">
     <div class="mb-3">
         <label for="email" class="form-label">Email Address</label>
